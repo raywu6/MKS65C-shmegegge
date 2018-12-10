@@ -1,9 +1,11 @@
-#include <stdio.h>   // printf, perror, fgets
+#include <stdio.h>   // printf, perror, scanf
 #include <sys/ipc.h> // ftok, shmctl+
 #include <sys/shm.h> // shmget, shmat, shmctl+
 #include <stdlib.h>  // calloc, free
 #include <string.h>  // strcmp, strerror
 #include <errno.h>   // ERRNO
+
+// http://beej.us/guide/bgipc/html/multi/shm.html
 
 int main() {
     key_t key = ftok( "./tester.txt", 'R' );
@@ -32,6 +34,7 @@ int main() {
 
         char *input = calloc( 1, sizeof(char) );
         printf("Change data in segment? (y/n) ");
+        // using scanf b/c fgets uses buffered input (from stdin)... newline for input stays in buffer for next prompt...
         scanf("%s", input); // get letter and \0 from stdin, bind to input
 
         if ( !strcmp(input,"y") ) { // if =0 thus =y
